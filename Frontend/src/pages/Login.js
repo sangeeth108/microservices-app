@@ -25,7 +25,7 @@ const Signin = () => {
       }
   
       const data = await response.json();
-      const userData = { name: data.name, email: data.email, role: data.role, userId: data.userId }; // assuming response contains name and email
+      const userData = { name: data.name, email: data.email, role: data.role, userId: data.userId };
       login(userData); // Update context with logged-in user data
       
       if (data.role === "admin") {

@@ -7,7 +7,8 @@ const app = express();
 app.use(cors());
 
 app.use("/user", createProxyMiddleware({ target: "http://localhost:5001", changeOrigin: true }));
-app.use("/order", createProxyMiddleware({ target: "http://localhost:5002", changeOrigin: true }));
+app.use("/order", createProxyMiddleware({ target: "http://localhost:9090", changeOrigin: true }));
+app.use("/product", createProxyMiddleware({ target: "http://localhost:8080", changeOrigin: true }));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

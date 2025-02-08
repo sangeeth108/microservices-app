@@ -43,7 +43,7 @@ const Signup = () => {
   
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{ maxWidth: 500 }}>
       <h2 className="text-center mb-4">Signup</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

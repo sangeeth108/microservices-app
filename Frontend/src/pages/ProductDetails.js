@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     axios.get(`http://localhost:3000/product/products/${id}`)
-      .then(response => {
-        setProduct(response.data);
-      })
+      .then(response => setProduct(response.data))
       .catch(error => console.error("Error fetching product details:", error));
   }, [id]);
+
+  const handleOrderNow = () => {
+    navigate("/checkoutpage", { state: { productId: id, quantity } });
+  };
 
   if (!product) {
     return <div className="container text-center mt-5"><h3>Loading...</h3></div>;
@@ -40,7 +44,23 @@ const ProductDetails = () => {
               <p className={`fw-bold fs-5 ${product.inventory > 0 ? "text-success" : "text-danger"}`}>
                 {product.inventory > 0 ? `In Stock: ${product.inventory}` : "Out of Stock"}
               </p>
-              <Link to="/checkoutpage" className="btn btn-outline-secondary btn-lg mt-3">Order Now</Link>
+              <div className="mb-3">
+                <label htmlFor="quantity" className="form-label">Quantity</label>
+                <input 
+                  type="number" 
+                  id="quantity" 
+                  className="form-control" 
+                  min="1" 
+                  max={product.inventory} 
+                  value={quantity}
+                  onChange={(e) => setQuantity(Math.max(1, Math.min(product.inventory, parseInt(e.target.value))))}
+                  style={{maxWidth: 70}} 
+                  required 
+                />
+              </div>
+              <button onClick={handleOrderNow} className="btn btn-outline-secondary btn-lg mt-3">
+                Order Now
+              </button>
             </div>
           </div>
         </div>
